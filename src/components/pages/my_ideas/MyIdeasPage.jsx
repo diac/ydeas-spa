@@ -31,7 +31,7 @@ const MyIdeasPage = () => {
           navigate("/my-ideas");
         }
       });
-  }, [keycloak.token, searchParams]);
+  }, [keycloak.token, searchParams, navigate]);
 
   const deleteIdea = (ideaId) => {
     const API_ENDPOINT_URL =
