@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import { Link } from "react-router-dom";
+import Paging from "../../ui/Paging";
 
 const IdeasRatingPage = () => {
   const [state, setState] = useState();
@@ -33,6 +34,7 @@ const IdeasRatingPage = () => {
 
   return (
     <React.Fragment>
+      <h1>Идеи</h1>
       {state && state.page && (
         <div className="ideas ideas-rating">
           <table className="table table-striped table-bordered">
@@ -59,6 +61,14 @@ const IdeasRatingPage = () => {
               ))}
             </tbody>
           </table>
+
+          {state.page.content.length > 0 && (
+            <Paging
+              pageNumber={state.page.number + 1}
+              totalPages={state.page.totalPages}
+              onUpdate={fetchIdeas}
+            />
+          )}
         </div>
       )}
     </React.Fragment>
