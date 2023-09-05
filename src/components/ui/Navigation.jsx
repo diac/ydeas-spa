@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 
 const Navigation = () => {
+  const { keycloak } = useKeycloak();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -13,7 +16,9 @@ const Navigation = () => {
             <Link to="/my-ideas" className="nav-link">
               My Ideas
             </Link>
-            <Link className="nav-link">Logout</Link>
+            <Link className="nav-link" onClick={() => keycloak.logout()}>
+              Logout
+            </Link>
           </div>
         </div>
       </div>
