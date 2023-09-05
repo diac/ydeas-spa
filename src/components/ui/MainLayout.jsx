@@ -1,7 +1,14 @@
 import React from "react";
+import Navigation from "./Navigation";
 
 const MainLayout = () => {
-  return <React.Fragment>Main app layout</React.Fragment>;
+  return (
+    <React.Fragment>
+      <div className="container">
+        <Navigation />
+      </div>
+    </React.Fragment>
+  );
 };
 
 export default MainLayout;
