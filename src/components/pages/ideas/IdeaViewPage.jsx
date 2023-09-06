@@ -79,16 +79,18 @@ const IdeaViewPage = () => {
           <h1>{state.idea.title}</h1>
           <p className="mb-2">{state.idea.description}</p>
           <div>Автор: {state.idea.authorUuid}</div>
-
           <hr />
           <div className="attachments">
             <h2>Прикрепленные файлы</h2>
 
-            <IdeaAttachments attachments={state.idea.attachments} />
+            <IdeaAttachments
+              attachments={state.idea.attachments}
+              allowRemove={keycloak.subject === state.idea.authorUuid}
+              ideaId={state.idea.id}
+              callback={fetchIdea}
+            />
           </div>
-
           <hr />
-
           <div className="controls">
             <button type="button" className="btn btn-light" onClick={like}>
               Like
@@ -97,7 +99,6 @@ const IdeaViewPage = () => {
               Dislike
             </button>
           </div>
-
           {keycloak.hasRealmRole("EXPERT") && (
             <div className="controls">
               <button type="button" className="btn btn-light" onClick={approve}>

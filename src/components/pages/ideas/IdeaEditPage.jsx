@@ -81,7 +81,12 @@ const IdeaEditPage = () => {
           <div className="attachments">
             <h2>Прикрепленные файлы</h2>
 
-            <IdeaAttachments attachments={state.idea.attachments} />
+            <IdeaAttachments
+              attachments={state.idea.attachments}
+              allowRemove={keycloak.subject === state.idea.authorUuid}
+              ideaId={state.idea.id}
+              callback={fetchIdea}
+            />
 
             <form method="POST" onSubmit={attachFile}>
               <div className="mb-2">
