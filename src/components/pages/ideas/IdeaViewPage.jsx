@@ -45,6 +45,28 @@ const IdeaViewPage = () => {
     });
   };
 
+  const approve = () => {
+    const API_ENDPOINT_URL =
+      process.env.REACT_APP_YDEAS_API_HOST +
+      `/ideas/idea_review/${ideaId}/approve`;
+    const headers = { Authorization: `Bearer ${keycloak.token}` };
+    fetch(API_ENDPOINT_URL, {
+      headers: headers,
+      method: "POST",
+    });
+  };
+
+  const decline = () => {
+    const API_ENDPOINT_URL =
+      process.env.REACT_APP_YDEAS_API_HOST +
+      `/ideas/idea_review/${ideaId}/decline`;
+    const headers = { Authorization: `Bearer ${keycloak.token}` };
+    fetch(API_ENDPOINT_URL, {
+      headers: headers,
+      method: "POST",
+    });
+  };
+
   useEffect(() => {
     fetchIdea();
   }, [fetchIdea]);
@@ -64,6 +86,17 @@ const IdeaViewPage = () => {
               Dislike
             </button>
           </div>
+
+          {keycloak.hasRealmRole("EXPERT") && (
+            <div className="controls">
+              <button type="button" className="btn btn-light" onClick={approve}>
+                Approve
+              </button>
+              <button type="button" className="btn btn-light" onClick={decline}>
+                Decline
+              </button>
+            </div>
+          )}
         </React.Fragment>
       )}
     </div>
