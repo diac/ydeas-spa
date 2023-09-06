@@ -24,6 +24,27 @@ const IdeaViewPage = () => {
       });
   }, [ideaId, keycloak]);
 
+  const like = () => {
+    const API_ENDPOINT_URL =
+      process.env.REACT_APP_YDEAS_API_HOST + `/ideas/idea_rate/${ideaId}/like`;
+    const headers = { Authorization: `Bearer ${keycloak.token}` };
+    fetch(API_ENDPOINT_URL, {
+      headers: headers,
+      method: "POST",
+    });
+  };
+
+  const dislike = () => {
+    const API_ENDPOINT_URL =
+      process.env.REACT_APP_YDEAS_API_HOST +
+      `/ideas/idea_rate/${ideaId}/dislike`;
+    const headers = { Authorization: `Bearer ${keycloak.token}` };
+    fetch(API_ENDPOINT_URL, {
+      headers: headers,
+      method: "POST",
+    });
+  };
+
   useEffect(() => {
     fetchIdea();
   }, [fetchIdea]);
@@ -35,6 +56,14 @@ const IdeaViewPage = () => {
           <h1>{state.idea.title}</h1>
           <p className="mb-2">{state.idea.description}</p>
           <div>Автор: {state.idea.authorUuid}</div>
+          <div className="controls">
+            <button type="button" className="btn btn-light" onClick={like}>
+              Like
+            </button>
+            <button type="button" className="btn btn-light" onClick={dislike}>
+              Dislike
+            </button>
+          </div>
         </React.Fragment>
       )}
     </div>
