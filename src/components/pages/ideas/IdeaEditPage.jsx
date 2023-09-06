@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import { useNavigate } from "react-router-dom";
 import IdeaForm from "./IdeaForm";
+import IdeaAttachments from "./IdeaAttachments";
 
 const IdeaEditPage = () => {
   const [state, setState] = useState();
@@ -12,7 +13,7 @@ const IdeaEditPage = () => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchIdea = useCallback(() => {
     const API_ENDPOINT_URL =
       process.env.REACT_APP_YDEAS_API_HOST + `/ideas/idea/${ideaId}`;
     const headers = { Authorization: "Bearer " + keycloak.token };
@@ -48,12 +49,57 @@ const IdeaEditPage = () => {
     });
   };
 
+  const attachFile = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const API_ENDPOINT_URL =
+      process.env.REACT_APP_YDEAS_API_HOST +
+      `/ideas/media/upload_for_idea/${ideaId}`;
+    const headers = {
+      Authorization: "Bearer " + keycloak.token,
+    };
+    fetch(API_ENDPOINT_URL, {
+      headers: headers,
+      method: "POST",
+      body: formData,
+    }).then(() => fetchIdea());
+  };
+
+  useEffect(() => {
+    fetchIdea();
+  }, [fetchIdea]);
+
   return (
     <div className="ideas idea-edit">
       {state && state.idea && (
         <React.Fragment>
           <h1>Редактирование идеи</h1>
           <IdeaForm method="" onSubmit={formSubmit} idea={state.idea} />
+
+          <hr />
+          <div className="attachments">
+            <h2>Прикрепленные файлы</h2>
+
+            <IdeaAttachments attachments={state.idea.attachments} />
+
+            <form method="POST" onSubmit={attachFile}>
+              <div className="mb-2">
+                <label htmlFor="file">Прикрепить файл</label>
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  className="form-control"
+                />
+              </div>
+              <div className="controls">
+                <button type="submit" className="btn btn-success">
+                  Прикрепить
+                </button>
+              </div>
+            </form>
+          </div>
         </React.Fragment>
       )}
     </div>

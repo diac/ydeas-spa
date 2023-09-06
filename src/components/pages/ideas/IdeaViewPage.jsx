@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+import IdeaAttachments from "./IdeaAttachments";
 
 const IdeaViewPage = () => {
   const { ideaId } = useParams();
@@ -78,6 +79,16 @@ const IdeaViewPage = () => {
           <h1>{state.idea.title}</h1>
           <p className="mb-2">{state.idea.description}</p>
           <div>Автор: {state.idea.authorUuid}</div>
+
+          <hr />
+          <div className="attachments">
+            <h2>Прикрепленные файлы</h2>
+
+            <IdeaAttachments attachments={state.idea.attachments} />
+          </div>
+
+          <hr />
+
           <div className="controls">
             <button type="button" className="btn btn-light" onClick={like}>
               Like
