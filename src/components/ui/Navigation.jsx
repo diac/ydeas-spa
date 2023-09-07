@@ -14,10 +14,10 @@ const Navigation = () => {
         <div className="navbar-collapse collapse" id="basic-navbar-nav">
           <div className="me-auto navbar-nav">
             <Link to="/my-ideas" className="nav-link">
-              My Ideas
+              Мои идеи
             </Link>
             <Link className="nav-link" onClick={() => keycloak.logout()}>
-              Logout
+              Выйти
             </Link>
           </div>
         </div>
