@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const IdeaForm = (props) => {
   const { idea } = props;
+  const { editorState } = props;
+  const { onEditorStateChange } = props;
   return (
     <div className="idea-form">
       <form method={props.method} onSubmit={props.onSubmit}>
@@ -25,13 +29,14 @@ const IdeaForm = (props) => {
           <label htmlFor="description" className="form-label">
             Описание
           </label>
-          <textarea
-            id="description"
-            name="description"
-            className="form-control"
+          <Editor
+            editorState={editorState}
+            wrapperClassName="rich-editor-wrapper"
+            editorClassName="rich-editor"
+            toolbarClassName="rich-editor-toolbar"
+            onEditorStateChange={onEditorStateChange}
             placeholder="Описание идеи"
-            defaultValue={(idea && idea.description) || ""}
-          ></textarea>
+          />
         </div>
         <div className="controls mb-2">
           <button type="submit" className="btn btn-success">
