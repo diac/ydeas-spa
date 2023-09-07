@@ -68,6 +68,13 @@ const IdeaViewPage = () => {
     });
   };
 
+  const ideaDescriptionElement = (ideaDescription) => {
+    const HtmlToReactParser = require("html-to-react").Parser;
+    const htmlToReactParser = new HtmlToReactParser();
+    const reactElement = htmlToReactParser.parse(state.idea.description);
+    return reactElement;
+  };
+
   useEffect(() => {
     fetchIdea();
   }, [fetchIdea]);
@@ -77,7 +84,9 @@ const IdeaViewPage = () => {
       {state && state.idea && (
         <React.Fragment>
           <h1>{state.idea.title}</h1>
-          <p className="mb-2">{state.idea.description}</p>
+          <article className="mb-2">
+            {ideaDescriptionElement(state.idea.description)}
+          </article>
           <div>Автор: {state.idea.authorUuid}</div>
           <hr />
           <div className="attachments">
