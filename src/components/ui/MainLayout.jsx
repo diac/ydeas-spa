@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navigation from "./Navigation";
 import MainContent from "./MainContent";
 import { useKeycloak } from "@react-keycloak/web";
 
 const MainLayout = () => {
-  const { keycloak } = useKeycloak();
+  const { keycloak, initialized: keycloakInitialized } = useKeycloak();
+
+  useEffect(() => {
+    if (keycloakInitialized && !keycloak.authenticated) {
+      keycloak.login();
+    }
+  }, [keycloak, keycloakInitialized]);
 
   return (
     <React.Fragment>
@@ -15,18 +21,6 @@ const MainLayout = () => {
               <Navigation />
               <MainContent />
             </React.Fragment>
-          )}
-
-          {!keycloak.authenticated && (
-            <div>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => keycloak.login()}
-              >
-                Login
-              </button>
-            </div>
           )}
         </div>
       )}
