@@ -6,6 +6,9 @@ import { useKeycloak } from "@react-keycloak/web";
 import { useNavigate } from "react-router-dom";
 import IdeaForm from "./IdeaForm";
 import IdeaAttachments from "./IdeaAttachments";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 
 const IdeaEditPage = () => {
   const [state, setState] = useState();
@@ -17,7 +20,7 @@ const IdeaEditPage = () => {
     const API_ENDPOINT_URL =
       process.env.REACT_APP_YDEAS_API_HOST + `/ideas/idea/${ideaId}`;
     const headers = { Authorization: "Bearer " + keycloak.token };
-    fetch(API_ENDPOINT_URL, {
+    return fetch(API_ENDPOINT_URL, {
       headers: headers,
     })
       .then((result) => result.json())
@@ -39,7 +42,12 @@ const IdeaEditPage = () => {
       Authorization: "Bearer " + keycloak.token,
       "Content-Type": "application/json",
     };
-    const requestBody = Object.fromEntries(formData.entries());
+    const requestBody = {
+      ...Object.fromEntries(formData.entries()),
+      description: draftToHtml(
+        convertToRaw(state.editorState.getCurrentContent())
+      ),
+    };
     fetch(API_ENDPOINT_URL, {
       headers: headers,
       method: "PUT",
@@ -66,16 +74,42 @@ const IdeaEditPage = () => {
     }).then(() => fetchIdea());
   };
 
+  const onEditorStateChange = useCallback((editorState) => {
+    setState((oldState) => ({
+      ...oldState,
+      editorState,
+      idea: {
+        ...oldState.idea,
+        description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+      },
+    }));
+  }, []);
+
   useEffect(() => {
-    fetchIdea();
-  }, [fetchIdea]);
+    fetchIdea().then(() => {
+      setState((oldState) => ({
+        ...oldState,
+        editorState: EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            htmlToDraft(oldState.idea.description)
+          )
+        ),
+      }));
+    });
+  }, [fetchIdea, setState]);
 
   return (
     <div className="ideas idea-edit">
       {state && state.idea && (
         <React.Fragment>
           <h1>Редактирование идеи</h1>
-          <IdeaForm method="" onSubmit={formSubmit} idea={state.idea} />
+          <IdeaForm
+            method=""
+            onSubmit={formSubmit}
+            idea={state.idea}
+            editorState={state.editorState}
+            onEditorStateChange={onEditorStateChange}
+          />
 
           <hr />
           <div className="attachments">
