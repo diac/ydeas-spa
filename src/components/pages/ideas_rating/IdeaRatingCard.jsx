@@ -30,7 +30,16 @@ const IdeaRatingCard = (props) => {
             <div className="author">Автор: {ideaRating.ideaAuthorUuid}</div>
             <div className="rating-score">Рейтинг: {ideaRating.rating}</div>
           </div>
-          <div className="card-body">Подробнее</div>
+          <div className="card-body">
+            <Link
+              to={`/ideas/${ideaRating.ideaId}`}
+              className={`btn ${
+                (ideaRating.ideaStatus && "btn-outline-light") || "btn-light"
+              }`}
+            >
+              Подробнее
+            </Link>
+          </div>
         </div>
       )}
     </React.Fragment>
