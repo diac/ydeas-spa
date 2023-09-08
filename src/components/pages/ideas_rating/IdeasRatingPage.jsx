@@ -2,8 +2,8 @@ import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
-import { Link } from "react-router-dom";
 import Paging from "../../ui/Paging";
+import IdeaRatingCard from "./IdeaRatingCard";
 
 const IdeasRatingPage = () => {
   const [state, setState] = useState();
@@ -37,30 +37,9 @@ const IdeasRatingPage = () => {
       <h1>Идеи</h1>
       {state && state.page && (
         <div className="ideas ideas-rating">
-          <table className="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Идея</th>
-                <th>Автор</th>
-                <th>Рейтинг</th>
-                <th>Статус</th>
-              </tr>
-            </thead>
-            <tbody>
-              {state.page.content.map((ideaRating) => (
-                <tr key={ideaRating.ideaId}>
-                  <td>
-                    <Link to={`/ideas/${ideaRating.ideaId}`}>
-                      {ideaRating.ideaTitle}
-                    </Link>
-                  </td>
-                  <td>{ideaRating.ideaAuthorUuid}</td>
-                  <td>{ideaRating.rating}</td>
-                  <td>{ideaRating.ideaStatus}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {state.page.content.map((ideaRating) => (
+            <IdeaRatingCard key={ideaRating.ideaId} ideaRating={ideaRating} />
+          ))}
 
           {state.page.content.length > 0 && (
             <Paging
