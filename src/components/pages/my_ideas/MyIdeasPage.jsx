@@ -5,6 +5,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Paging from "../../ui/Paging";
+import DateTime from "../../ui/DateTime";
 
 const MyIdeasPage = () => {
   const [state, setState] = useState();
@@ -68,7 +69,9 @@ const MyIdeasPage = () => {
                   <td>
                     <Link to={`/ideas/${idea.id}`}>{idea.title}</Link>
                   </td>
-                  <td>{idea.createdAt}</td>
+                  <td>
+                    <DateTime value={idea.createdAt} />
+                  </td>
                   <td>
                     <div className="btn-group">
                       <Link
