@@ -100,23 +100,40 @@ const IdeaViewPage = () => {
             />
           </div>
           <hr />
-          <div className="controls">
-            <button type="button" className="btn btn-light" onClick={like}>
-              Like
-            </button>
-            <button type="button" className="btn btn-light" onClick={dislike}>
-              Dislike
-            </button>
-          </div>
-          {keycloak.hasRealmRole("EXPERT") && (
+          <div className="rate-idea mb-2">
+            <h4>Оценить идею</h4>
             <div className="controls">
-              <button type="button" className="btn btn-light" onClick={approve}>
-                Approve
+              <button type="button" className="btn btn-light" onClick={like}>
+                Нравится
               </button>
-              <button type="button" className="btn btn-light" onClick={decline}>
-                Decline
+              <button type="button" className="btn btn-light" onClick={dislike}>
+                Не нравится
               </button>
             </div>
+          </div>
+          {keycloak.hasRealmRole("EXPERT") && (
+            <React.Fragment>
+              <hr />
+              <div className="review-idea mb-2">
+                <h4>Рассмотреть идею</h4>
+                <div className="controls">
+                  <button
+                    type="button"
+                    className="btn btn-light"
+                    onClick={approve}
+                  >
+                    Одобрить
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-light"
+                    onClick={decline}
+                  >
+                    Отклонить
+                  </button>
+                </div>
+              </div>
+            </React.Fragment>
           )}
         </React.Fragment>
       )}
