@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import IdeaStatus from "../../ui/IdeaStatus";
+import IdeaAuthor from "../../ui/IdeaAuthor";
 
 const IdeaRatingCard = (props) => {
   const { ideaRating } = props;
@@ -27,7 +28,9 @@ const IdeaRatingCard = (props) => {
               </Link>
             </div>
             <IdeaStatus ideaStatus={ideaRating.ideaStatus} />
-            <div className="author">Автор: {ideaRating.ideaAuthorUuid}</div>
+            <div className="author">
+              Автор: <IdeaAuthor uuid={ideaRating.ideaAuthorUuid} />
+            </div>
             <div className="rating-score">Рейтинг: {ideaRating.rating}</div>
           </div>
           <div className="card-body">

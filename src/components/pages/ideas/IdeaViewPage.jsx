@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import IdeaAttachments from "./IdeaAttachments";
+import IdeaAuthor from "../../ui/IdeaAuthor";
 
 const IdeaViewPage = () => {
   const { ideaId } = useParams();
@@ -87,7 +88,9 @@ const IdeaViewPage = () => {
           <article className="mb-2">
             {ideaDescriptionElement(state.idea.description)}
           </article>
-          <div>Автор: {state.idea.authorUuid}</div>
+          <div className="author">
+            Автор: <IdeaAuthor uuid={state.idea.authorUuid} />
+          </div>
           <hr />
           <div className="attachments">
             <h2>Прикрепленные файлы</h2>
