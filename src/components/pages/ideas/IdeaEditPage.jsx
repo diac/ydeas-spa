@@ -25,10 +25,14 @@ const IdeaEditPage = () => {
     })
       .then((result) => result.json())
       .then((result) => {
-        setState({
+        setState((oldState) => ({
+          ...oldState,
           isLoaded: true,
           idea: result,
-        });
+          editorState: EditorState.createWithContent(
+            ContentState.createFromBlockArray(htmlToDraft(result.description))
+          ),
+        }));
       });
   }, [ideaId, keycloak.token]);
 
