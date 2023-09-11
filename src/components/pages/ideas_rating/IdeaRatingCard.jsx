@@ -7,8 +7,8 @@ const IdeaRatingCard = (props) => {
   const { ideaRating } = props;
 
   const cardClasses = {
-    approved: "text-bg-success",
-    declined: "text-bg-danger",
+    approved: "border-success",
+    declined: "border-danger",
   };
 
   return (
@@ -27,18 +27,18 @@ const IdeaRatingCard = (props) => {
                 {ideaRating.ideaTitle}
               </Link>
             </div>
-            <IdeaStatus ideaStatus={ideaRating.ideaStatus} />
             <div className="author">
-              Автор: <IdeaAuthor uuid={ideaRating.ideaAuthorUuid} />
+              <IdeaAuthor uuid={ideaRating.ideaAuthorUuid} />
             </div>
             <div className="rating-score">Рейтинг: {ideaRating.rating}</div>
           </div>
           <div className="card-body">
+            <div className="idea-status mb-2">
+              <IdeaStatus ideaStatus={ideaRating.ideaStatus} />
+            </div>
             <Link
               to={`/ideas/${ideaRating.ideaId}`}
-              className={`btn ${
-                (ideaRating.ideaStatus && "btn-outline-light") || "btn-light"
-              }`}
+              className={`btn ${"btn-light"}`}
             >
               Подробнее
             </Link>

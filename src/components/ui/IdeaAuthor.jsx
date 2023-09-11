@@ -24,7 +24,8 @@ const IdeaAuthor = (props) => {
     <React.Fragment>
       {state && state.user && (
         <div className="idea-author">
-          {`${state.user.firstName} ${state.user.lastName}`}
+          Автор:{" "}
+          <span className="author-name">{`${state.user.firstName} ${state.user.lastName}`}</span>
         </div>
       )}
     </React.Fragment>
