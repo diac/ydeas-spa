@@ -14,7 +14,7 @@ const IdeasRatingPage = () => {
     const pageNumber = searchParams.get("page") || 1;
     const API_ENDPOINT_URL =
       process.env.REACT_APP_YDEAS_API_HOST +
-      `/ideas/idea_rating?page=${pageNumber}`;
+      `/ideas/idea_rating?page=${pageNumber}&size=${process.env.REACT_APP_IDEAS_RATING_RESULTS_PER_PAGE}`;
     const headers = { Authorization: "Bearer " + keycloak.token };
     fetch(API_ENDPOINT_URL, {
       headers: headers,
@@ -37,9 +37,16 @@ const IdeasRatingPage = () => {
       <h1>Идеи</h1>
       {state && state.page && (
         <div className="ideas ideas-rating">
-          {state.page.content.map((ideaRating) => (
-            <IdeaRatingCard key={ideaRating.ideaId} ideaRating={ideaRating} />
-          ))}
+          <div className="row">
+            {state.page.content.map((ideaRating) => (
+              <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
+                <IdeaRatingCard
+                  key={ideaRating.ideaId}
+                  ideaRating={ideaRating}
+                />
+              </div>
+            ))}
+          </div>
 
           {state.page.content.length > 0 && (
             <Paging

@@ -15,7 +15,7 @@ const IdeaRatingCard = (props) => {
     <React.Fragment>
       {ideaRating && (
         <div
-          className={`idea-card mb-2 p-2 card ${
+          className={`idea-card p-2 card h-100 ${
             (ideaRating.ideaStatus &&
               cardClasses[ideaRating.ideaStatus.toLowerCase()]) ||
             "text-bg-light"
