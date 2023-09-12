@@ -89,7 +89,7 @@ const IdeaViewPage = () => {
             {ideaDescriptionElement(state.idea.description)}
           </article>
           <div className="author">
-            Автор: <IdeaAuthor uuid={state.idea.authorUuid} />
+            <IdeaAuthor uuid={state.idea.authorUuid} />
           </div>
           <hr />
           <div className="attachments">
