@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+# Ydeas SPA
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Описание проекта
 
-## Available Scripts
+Проект представляет собой одностраничное веб-приложения для работы с сервисом Ydeas (https://github.com/diac/ydeas). Приложение позволяет пользователям предлагать свою бизнес-идею для рассмотрения экспертами, которые в последствии принимают решение о ее жизнеспособности. Пользователь вводит текстовое описание идеи и опционально загружает дополнительные материалы, связанные с идеей (PDF-документы, картинки). Другие пользователи системы имеют возможность просматривать все загруженные бизнес-идеи и голосовать за них оценками "Нравится" или "Не нравится". Пользователи-эксперты должны иметь возможность утвердить или отклонить бизнес-идею.
 
-In the project directory, you can run:
+## Роли пользователей
 
-### `npm start`
+1. Пользователь -- может предлагать свои идеи, просматривать все бизнес-идеи, созданные другими пользователями,
+   оценивать бизнес-идеи, добавленные в систему
+2. Эксперт -- может все то же, что и Пользователь, плюс имеет возможность утверждать или отклонять идеи.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Особенности реализации
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Проект реализован в виде одностраничного веб-приложения на React. Для аутентификации и авторизации пользователей используется Keycloak.
 
-### `npm test`
+## Стек технологий
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React 18.2.0
+- React DOM 18.2.0
+- React Draft Wysiwyg 1.15.0
+- React Router DOM 5.0.1
+- React Bootstrap 2.8.0
+- Keycloak JS 22.0.1
+- Bootstrap 5.3.1
+- Draft JS 0.11.7
 
-### `npm run build`
+## Требования к окружению
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- NodeJS 18
+- NPM 9.8.1
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Сборка и запуск проекта
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Настройка переменных среды
 
-### `npm run eject`
+Перед запуском приложения необходимо определить следующие переменные среды:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- REACT_APP_YDEAS_API_HOST -- адрес хоста, на котором развернут сервис Ydeas
+- REACT_APP_KEYCLOAK_URL -- адрес хоста, на котором развернут Keycloak
+- REACT_APP_KEYCLOAK_REALM -- имя рэлма Keycloak, в котором хранятся данные учетных записей пользователей сервиса Ydeas
+- REACT_APP_KEYCLOAK_CLIENT_ID -- ID клиента Keycloak, под которым будут авторизовываться пользователи приложения
+- REACT_APP_IDEAS_RATING_RESULTS_PER_PAGE -- количество результатов рейтинга идей, выводимых на одной странице
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Для определения данных переменных среды, можно создать в корневой директории проекта файл .env.local. В качестве образца можно использовать файл .env.example.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Запуск через NPM
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Для запуска через NPM достаточно склонировать проект в некоторую директорию. Затемм, из этой директории выполнить команду
 
-## Learn More
+```shell
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+В результате выполнения этой команды запустится локальный сервер приложения, и само приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Запуск через Docker Compose
 
-### Code Splitting
+Перед запуском приложения через Docker Compose также необходимо определить переменные среды по аналогии с запуском через NPM.
+Для этого можно либо создать файл .env.local в корневой директории проекта, либо определить значения переменных среды в конфигурации соответствующего Docker-сервиса в файле docker-compose.yml.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Далее, для запуска приложения необходимо выполнить команду
 
-### Analyzing the Bundle Size
+```shell
+docker compose up
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Взаимодействие с приложением
 
-### Making a Progressive Web App
+### Вход в сисиему
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+При открытии страницы с приложением, компонент Keycloak проверяет данные аутентификации пользователя. Если пользователь не аутентифицирован, приложение осуществляет редирект на страницу с формой входа Keycloak.
 
-### Advanced Configuration
+![Вход в систему](/img/1_keycloak_sign_in.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+После удачной аутентификации, Keycloak перенаправит пользователя обратно на страницу с приложением.
 
-### Deployment
+### Экран "Рейтинг идей"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+На данном экране отображаются каротчки с идеями, упорядоченные по убыванию рейтинга идей.
+Одобренные и отклоненные идеи выделяются определенным стилем (зеленая рамка -- у одобренных, красная -- у отклоненных).
+Для того, чтобы просмотреть полное содержание идеи, пользователь должен нажать на ссылку "Подробнее" -- в результате откроется экран "Просмотр идеи".
 
-### `npm run build` fails to minify
+![Рейтинг идей](/img/2_ideas_rating.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Экран "Просмотр идеи"
+
+На данном экране отображается заголовок, содержание идеи и перечень прикрепленных к идее файлов.
+На этом же экране находятся кнопки, с помощью которых пользователь может оценить идею ("Нравится" / "Не нравится").
+
+![Просмотр идеи](/img/3_idea_view.png)
+
+### Экран "Мои идеи"
+
+На данном экране отображаются все идеи, принадлежащие пользователю. Пользователь может добавлять новые идеи, редактировать и удалять уже существующие.
+![Мои идеи](/img/4_my_ideas.png)
+
+### Экран "Добавление идеи"
+
+На данном экране содержится форма создания новой идеи.
+Описание идеи можно вводить и редактировать в формате rich-text с использованием WYSIWYG-редактора. Существует возможность стилизации текста (толщина и размер шрифта, курсив, заголовки, списки, картинки и т.п.).
+
+![Добавление идеи](/img/5_add_idea.png)
+
+### Экран "Редактирование идеи"
+
+Данный экран аналогичен экрану "Добавление идеи".
+![Редактирование идеи](/img/6_edit_idea.png)
+
+Помимо редактирования заголовка и описания идеи, на данном экране предусмотрена возможность прикрепления файлов к идее:
+![Прикрепленные файлы](/img/7_idea_attachments.png)
+
+### Оценка идей
+
+На экране "Просмотр идеи" доступна функция оценки идей.
+Любой пользователь может поставить идее оценку "Нравится" или "Не нравится", что отразится на позиции идеи в рейтинге.
+Пользователь-эксперт также может "Одобрить" или "Отклонить" идею.
+
+![Оценка идей](/img/8_idea_vote.png)
+
+## Контакты
+
+email: nikolai.gladkikh.biz22@gmail.com
